@@ -3,6 +3,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
 
 class ScrButton(Button):
     def __init__(self, screen, direction = 'right', goal = 'main', **kwargs):
@@ -43,15 +44,40 @@ class MainScreen(Screen):
 class FirstScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        txt = Label(text = "екран1")
-        self.add_widget(txt) 
+        v1box = BoxLayout(orientation = 'vertical', padding = 8, spacing = 8, size_hint = (0.5, 0.5), pos_hint = {'center_x': 0.5, 'center_y': 0.5})
+        btn = Button(text = "Вибір 1", size_hint = (0.5, 1), pos_hint = {'left': 0})
+        return_btn = ScrButton(self, direction='up', goal='main', text = "back", size_hint = (0.5, 1), pos_hint = {'right': 1})
+        v1box.add_widget(btn)
+        v1box.add_widget(return_btn)
+        self.add_widget(v1box)                                                                      
 
-class SecondScreen(Screen):
+
+class SecondScreen(Screen):                            
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        txt = Label(text = "екран2")
-        self.add_widget(txt)
-
+        self.txt = Label(text = "екран2")
+        txt2 = Label(text = "Введіть пароль:")
+        self.inpt = TextInput(multiline = False)
+        v2box = BoxLayout(orientation = 'vertical', padding = 8, spacing = 8)
+        h2box = BoxLayout( size_hint =(0.8, None), height = '30sp')
+        h3box = BoxLayout(size_hint =(0.5, 0.2), pos_hint={'center_x':0.5})
+        h2box.add_widget(txt2)
+        h2box.add_widget(self.inpt)
+        
+        return2_btn = ScrButton(self, direction='right', goal='main', text = "Back")
+        btn_ok = Button(text = "OK")
+        btn_ok.on_press = self.change_text
+        v2box.add_widget(self.txt)
+        v2box.add_widget(h2box)
+        h3box.add_widget(btn_ok)
+        h3box.add_widget(return2_btn)
+        v2box.add_widget(h3box)
+        
+        self.add_widget(v2box)
+        
+    def change_text(self):
+        self.txt.text = self.inpt.text + " Не подходит"
+        
 class ThirdScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
